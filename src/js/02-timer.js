@@ -1,14 +1,14 @@
 import flatpickr from "flatpickr";
-import "flatpickr/dist/flatpickr.min.css";
 import Notiflix from 'notiflix';
+import "flatpickr/dist/flatpickr.min.css";
 
 const refs = {
-    startBtn: document.querySelector('button[data-start]'),
     input: document.querySelector('#datetime-picker'),
-    timerDays: document.querySelector('span[data-days]'),
-    timerHours: document.querySelector('span[data-hours]'),
-    timerMinutes: document.querySelector('span[data-minutes]'),
-    timerSeconds: document.querySelector('span[data-seconds]'),
+    startBtn: document.querySelector('button[data-start]'),
+    showDays: document.querySelector('span[data-days]'),
+    showHours: document.querySelector('span[data-hours]'),
+    showMinutes: document.querySelector('span[data-minutes]'),
+    showSeconds: document.querySelector('span[data-seconds]'),
 };
 
 let selectedDate;
@@ -25,8 +25,7 @@ const options = {
         if (selectedDates[0].getTime() <= today.getTime()) {
             Notiflix.Notify.failure("Please choose a date in the future");
             
-        } 
-        else {
+        } else {
             refs.startBtn.removeAttribute('disabled');
             
             return (selectedDate = selectedDates[0].getTime());
@@ -39,22 +38,6 @@ refs.startBtn.addEventListener('click', startTimer);
 
 function addLeadingZero(value) {
   return String(value).padStart(2, '0');
-};
-
-function startTimer(e) {
-    refs.startBtn.setAttribute('disabled', true);
-  setInterval(() => {
-    const currentTime = Date.now();
-    const deltaTime = selectedDate - currentTime;
-    if (deltaTime <= 0) {
-      return;
-    }
-    const { days, hours, minutes, seconds } = convertMs(deltaTime);
-    refs.timerDays.textContent = addLeadingZero(days);
-    refs.timerHours.textContent = addLeadingZero(hours);
-    refs.timerMinutes.textContent = addLeadingZero(minutes);
-    refs.timerSeconds.textContent = addLeadingZero(seconds);
-  }, 1000);
 };
 
 function convertMs(ms) {
@@ -70,3 +53,21 @@ function convertMs(ms) {
      
     return { days, hours, minutes, seconds };
 }
+
+
+
+function startTimer(e) {
+    refs.startBtn.setAttribute('disabled', true);
+  setInterval(() => {
+    const currentTime = Date.now();
+    const deltaTime = selectedDate - currentTime;
+    if (deltaTime <= 0) {
+      return;
+    }
+    const { days, hours, minutes, seconds } = convertMs(deltaTime);
+    refs.showDays.textContent = addLeadingZero(days);
+    refs.showHours.textContent = addLeadingZero(hours);
+    refs.showMinutes.textContent = addLeadingZero(minutes);
+    refs.showSeconds.textContent = addLeadingZero(seconds);
+  }, 1000);
+    };
