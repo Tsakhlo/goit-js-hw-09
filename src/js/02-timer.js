@@ -3,12 +3,12 @@ import Notiflix from 'notiflix';
 import "flatpickr/dist/flatpickr.min.css";
 
 const refs = {
-    input: document.querySelector('#datetime-picker'),
     startBtn: document.querySelector('button[data-start]'),
-    showDays: document.querySelector('span[data-days]'),
-    showHours: document.querySelector('span[data-hours]'),
-    showMinutes: document.querySelector('span[data-minutes]'),
-    showSeconds: document.querySelector('span[data-seconds]'),
+    input: document.querySelector('#datetime-picker'),
+    timerDays: document.querySelector('span[data-days]'),
+    timerHours: document.querySelector('span[data-hours]'),
+    timerMinutes: document.querySelector('span[data-minutes]'),
+    timerSeconds: document.querySelector('span[data-seconds]'),
 };
 
 let selectedDate;
@@ -40,6 +40,22 @@ function addLeadingZero(value) {
   return String(value).padStart(2, '0');
 };
 
+function startTimer(e) {
+  refs.startBtn.setAttribute('disabled', true);
+setInterval(() => {
+  const currentTime = Date.now();
+  const deltaTime = selectedDate - currentTime;
+  if (deltaTime <= 0) {
+    return;
+  }
+  const { days, hours, minutes, seconds } = convertMs(deltaTime);
+  refs.timerDays.textContent = addLeadingZero(days);
+  refs.timerHours.textContent = addLeadingZero(hours);
+  refs.timerMinutes.textContent = addLeadingZero(minutes);
+  refs.timerSeconds.textContent = addLeadingZero(seconds);
+  }, 1000);
+};
+
 function convertMs(ms) {
     const second = 1000;
     const minute = second * 60;
@@ -56,18 +72,3 @@ function convertMs(ms) {
 
 
 
-function startTimer(e) {
-    refs.startBtn.setAttribute('disabled', true);
-  setInterval(() => {
-    const currentTime = Date.now();
-    const deltaTime = selectedDate - currentTime;
-    if (deltaTime <= 0) {
-      return;
-    }
-    const { days, hours, minutes, seconds } = convertMs(deltaTime);
-    refs.showDays.textContent = addLeadingZero(days);
-    refs.showHours.textContent = addLeadingZero(hours);
-    refs.showMinutes.textContent = addLeadingZero(minutes);
-    refs.showSeconds.textContent = addLeadingZero(seconds);
-  }, 1000);
-    };
