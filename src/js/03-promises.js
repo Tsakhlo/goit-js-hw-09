@@ -9,19 +9,6 @@ const refs = {
 
 refs.form.addEventListener('submit', onFormSubmit);
 
-function createPromise(position, delay) {
-  const shouldResolve = Math.random() > 0.3;
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      if (shouldResolve) {
-        resolve({position,delay});
-      } else {
-        reject({position,delay});
-      }
-    }, delay);
-  });
-};
-
 function onFormSubmit(event) {
   event.preventDefault();
 
@@ -41,4 +28,15 @@ function onFormSubmit(event) {
   };
 };
 
-
+function createPromise(position, delay) {
+  const shouldResolve = Math.random() > 0.3;
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      if (shouldResolve) {
+        resolve({position,delay});
+      } else {
+        reject({position,delay});
+      }
+    }, delay);
+  });
+};
